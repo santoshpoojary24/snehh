@@ -191,10 +191,10 @@ export default function ConstellationSection() {
       ctx.fillStyle = auroraGrad
       ctx.fillRect(0, auroraY, W, H - auroraY)
 
-      // 3. Stars with occasional twinkle cross
+      // 3. Stars with static opacity
       state.stars.forEach(star => {
-        star.phase += star.speed
-        const opacity = star.baseOpacity + Math.sin(star.phase) * 0.4
+        // Removed phase animation
+        const opacity = star.baseOpacity + Math.sin(star.phase) * 0.2
         if (opacity <= 0) return
         
         // Draw soft halo for bright stars instead of shadowBlur
@@ -222,49 +222,12 @@ export default function ConstellationSection() {
         }
       })
 
-      // 4. Shooting Stars (spawn randomly)
-      if (Math.random() < 0.004) {
-        state.shootingStars.push(spawnShootingStar(W, H))
-      }
-      const aliveShoot = []
-      state.shootingStars.forEach(s => {
-        s.tail.unshift({ x: s.x, y: s.y })
-        if (s.tail.length > 18) s.tail.pop()
-        s.x += s.vx
-        s.y += s.vy
-        s.life -= 0.025
-
-        if (s.life > 0 && s.x < W + 50 && s.y < H + 50) {
-          aliveShoot.push(s)
-          // Draw tail
-          s.tail.forEach((pt, i) => {
-            const alpha = (1 - i / s.tail.length) * s.life * 0.8
-            ctx.strokeStyle = `rgba(255,255,255,${alpha})`
-            ctx.lineWidth = (1 - i / s.tail.length) * 2
-            if (i === 0) { ctx.beginPath(); ctx.moveTo(pt.x, pt.y) }
-            else ctx.lineTo(pt.x, pt.y)
-          })
-          ctx.stroke()
-          
-          // Head glow fallback
-          ctx.fillStyle = `rgba(255,255,255,0.2)`
-          ctx.beginPath()
-          ctx.arc(s.x, s.y, 6, 0, Math.PI * 2)
-          ctx.fill()
-          
-          // Core
-          ctx.fillStyle = `rgba(255,255,255,${s.life})`
-          ctx.beginPath()
-          ctx.arc(s.x, s.y, 2, 0, Math.PI * 2)
-          ctx.fill()
-        }
-      })
-      state.shootingStars = aliveShoot
+      // Removed shooting stars completely
 
       // 5. Heart glow fill
       if (state.completed && state.completionGlow < 1) state.completionGlow += 0.015
       if (state.completed && state.completionGlow > 0) {
-        const pulse = Math.sin(state.time * 1.5) * 0.04 + state.completionGlow * 0.15
+        const pulse = 0.15 + state.completionGlow * 0.15
         ctx.fillStyle = `rgba(159, 18, 57, ${pulse})`
         ctx.beginPath()
         ctx.moveTo(state.nodes[0].x, state.nodes[0].y)
@@ -299,7 +262,8 @@ export default function ConstellationSection() {
         }
         const curX = line.p1.x + (line.p2.x - line.p1.x) * line.progress
         const curY = line.p1.y + (line.p2.y - line.p1.y) * line.progress
-        const glowSize = state.completed ? 20 + Math.sin(state.time * 2) * 8 : 10
+        // Static glow on completed lines
+        const glowSize = state.completed ? 20 : 10
         ctx.strokeStyle = state.completed ? 'rgba(251,207,232,0.9)' : 'rgba(217,119,6,0.6)'
         ctx.lineWidth = state.completed ? 2.5 : 1.5
         
@@ -366,11 +330,11 @@ export default function ConstellationSection() {
           // Inner glow dot
           ctx.fillStyle = '#FBCFE8'
           ctx.beginPath()
-          ctx.arc(node.x, node.y, 6 + Math.sin(state.time * 4) * 1, 0, Math.PI * 2)
+          ctx.arc(node.x, node.y, 6, 0, Math.PI * 2)
           ctx.fill()
         } else {
-          // Pulsing inactive
-          const pulse = Math.sin(state.time * 2 + node.id * 1.3) * 0.3 + 0.5
+          // Static inactive
+          const pulse = 0.5
           ctx.fillStyle = `rgba(255,255,255,${pulse})`
           ctx.beginPath()
           ctx.arc(node.x, node.y, 3, 0, Math.PI * 2)
