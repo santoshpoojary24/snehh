@@ -43,8 +43,12 @@ function AppInner() {
       {/* Fixed background layers */}
       <DoodleBG />
       <ConfettiEngine />
-      <SectionDots />
-      <MusicPlayer />
+      {!showBouquet && (
+        <>
+          <SectionDots />
+          <MusicPlayer />
+        </>
+      )}
       <Toast />
       <EasterEgg />
 
