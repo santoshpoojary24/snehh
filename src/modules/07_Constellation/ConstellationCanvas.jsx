@@ -196,9 +196,16 @@ export default function ConstellationSection() {
         star.phase += star.speed
         const opacity = star.baseOpacity + Math.sin(star.phase) * 0.4
         if (opacity <= 0) return
+        
+        // Draw soft halo for bright stars instead of shadowBlur
+        if (opacity > 0.7) {
+          ctx.fillStyle = `rgba(${star.color}, 0.2)`
+          ctx.beginPath()
+          ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2)
+          ctx.fill()
+        }
+        
         ctx.fillStyle = `rgba(${star.color}, ${Math.max(0, opacity)})`
-        ctx.shadowBlur = opacity > 0.7 ? 10 : 0
-        ctx.shadowColor = `rgba(${star.color}, 0.8)`
         ctx.beginPath()
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
         ctx.fill()
@@ -214,7 +221,6 @@ export default function ConstellationSection() {
           ctx.stroke()
         }
       })
-      ctx.shadowBlur = 0
 
       // 4. Shooting Stars (spawn randomly)
       if (Math.random() < 0.004) {
@@ -239,14 +245,18 @@ export default function ConstellationSection() {
             else ctx.lineTo(pt.x, pt.y)
           })
           ctx.stroke()
-          // Head glow
-          ctx.shadowBlur = 15
-          ctx.shadowColor = '#fff'
+          
+          // Head glow fallback
+          ctx.fillStyle = `rgba(255,255,255,0.2)`
+          ctx.beginPath()
+          ctx.arc(s.x, s.y, 6, 0, Math.PI * 2)
+          ctx.fill()
+          
+          // Core
           ctx.fillStyle = `rgba(255,255,255,${s.life})`
           ctx.beginPath()
           ctx.arc(s.x, s.y, 2, 0, Math.PI * 2)
           ctx.fill()
-          ctx.shadowBlur = 0
         }
       })
       state.shootingStars = aliveShoot
@@ -289,18 +299,28 @@ export default function ConstellationSection() {
         }
         const curX = line.p1.x + (line.p2.x - line.p1.x) * line.progress
         const curY = line.p1.y + (line.p2.y - line.p1.y) * line.progress
-        // Pulsing glow on completed lines
         const glowSize = state.completed ? 20 + Math.sin(state.time * 2) * 8 : 10
         ctx.strokeStyle = state.completed ? 'rgba(251,207,232,0.9)' : 'rgba(217,119,6,0.6)'
         ctx.lineWidth = state.completed ? 2.5 : 1.5
-        ctx.shadowBlur = glowSize
-        ctx.shadowColor = state.completed ? '#FBCFE8' : '#D97706'
+        
+        // Draw underlying thicker translucent line instead of shadowBlur
+        if (state.completed) {
+           ctx.strokeStyle = 'rgba(251,207,232,0.2)'
+           ctx.lineWidth = glowSize
+           ctx.beginPath()
+           ctx.moveTo(line.p1.x, line.p1.y)
+           ctx.lineTo(curX, curY)
+           ctx.stroke()
+           
+           ctx.strokeStyle = 'rgba(251,207,232,0.9)'
+           ctx.lineWidth = 2.5
+        }
+        
         ctx.beginPath()
         ctx.moveTo(line.p1.x, line.p1.y)
         ctx.lineTo(curX, curY)
         ctx.stroke()
       })
-      ctx.shadowBlur = 0
 
       // 8. Cursor hover effect (no drag-to-connect, tap handles connection)
       const activeNodesList = state.nodes.filter(n => n.active)
@@ -326,46 +346,36 @@ export default function ConstellationSection() {
           ctx.strokeStyle = targetNode ? 'rgba(251,207,232,0.7)' : 'rgba(251,207,232,0.2)'
           ctx.lineWidth = targetNode ? 2 : 0.8
           ctx.setLineDash(targetNode ? [] : [4, 6])
-          ctx.shadowBlur = targetNode ? 12 : 0
-          ctx.shadowColor = '#FBCFE8'
           ctx.beginPath()
           ctx.moveTo(lastActiveNode.x, lastActiveNode.y)
           ctx.lineTo(lx, ly)
           ctx.stroke()
           ctx.setLineDash([])
-          ctx.shadowBlur = 0
         }
       }
 
       // 9. Nodes with animated rings
       state.nodes.forEach(node => {
         if (node.active) {
-          // Outer ring pulse
           const ringPulse = Math.sin(state.time * 3 + node.id) * 0.4 + 0.6
           ctx.strokeStyle = `rgba(251,207,232,${ringPulse * 0.4})`
           ctx.lineWidth = 1
-          ctx.shadowBlur = 0
           ctx.beginPath()
           ctx.arc(node.x, node.y, 12 + ringPulse * 4, 0, Math.PI * 2)
           ctx.stroke()
           // Inner glow dot
-          ctx.shadowBlur = 25
-          ctx.shadowColor = '#FBCFE8'
-          ctx.fillStyle = '#FFF'
+          ctx.fillStyle = '#FBCFE8'
           ctx.beginPath()
-          ctx.arc(node.x, node.y, state.completed ? 6 : 4.5, 0, Math.PI * 2)
+          ctx.arc(node.x, node.y, 6 + Math.sin(state.time * 4) * 1, 0, Math.PI * 2)
           ctx.fill()
         } else {
           // Pulsing inactive
           const pulse = Math.sin(state.time * 2 + node.id * 1.3) * 0.3 + 0.5
           ctx.fillStyle = `rgba(255,255,255,${pulse})`
-          ctx.shadowBlur = pulse * 12
-          ctx.shadowColor = 'rgba(255,255,255,0.6)'
           ctx.beginPath()
           ctx.arc(node.x, node.y, 3, 0, Math.PI * 2)
           ctx.fill()
         }
-        ctx.shadowBlur = 0
       })
 
       // 11. Particles with screen blend
@@ -381,8 +391,6 @@ export default function ConstellationSection() {
           aliveP.push(p)
           ctx.globalAlpha = Math.min(1, Math.max(0, p.life))
           ctx.fillStyle = p.color
-          ctx.shadowBlur = 15
-          ctx.shadowColor = p.color
           ctx.beginPath()
           ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2)
           ctx.fill()

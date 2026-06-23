@@ -51,10 +51,8 @@ export default function DoodleBG() {
             height: orb.size,
             borderRadius: '50%',
             background: orb.isCrimson 
-              ? 'radial-gradient(circle, rgba(136,19,55,0.4) 0%, rgba(136,19,55,0) 70%)'
-              : 'radial-gradient(circle, rgba(252,231,243,0.6) 0%, rgba(252,231,243,0) 70%)',
-            filter: 'blur(30px)',
-            mixBlendMode: 'multiply', // Gives a beautiful deep rich color on the light cream background
+              ? 'radial-gradient(circle, rgba(136,19,55,0.15) 0%, rgba(136,19,55,0) 70%)'
+              : 'radial-gradient(circle, rgba(252,231,243,0.3) 0%, rgba(252,231,243,0) 70%)',
           }}
         />
       ))}

@@ -205,8 +205,8 @@ export default function BouquetIntro({ onEnter }) {
           <motion.div
             initial={{ y: '20vh', scale: 0.8, opacity: 0 }}
             animate={phase === 'leaving'
-              ? { y: '-15vh', scale: 1.4, opacity: 0, filter: 'blur(12px)' }
-              : { y: '-4vh', scale: 1, opacity: 1, filter: 'blur(0px)' }
+              ? { y: '-15vh', scale: 1.4, opacity: 0 }
+              : { y: '-4vh', scale: 1, opacity: 1 }
             }
             transition={phase === 'leaving'
               ? { duration: 1.2, ease: [0.25, 1, 0.5, 1] }
@@ -235,7 +235,6 @@ export default function BouquetIntro({ onEnter }) {
                 objectFit: 'contain',
                 // This blends the pure black background of the generated image perfectly into our dark UI
                 mixBlendMode: 'screen',
-                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))',
               }}
             />
           </motion.div>
@@ -244,9 +243,9 @@ export default function BouquetIntro({ onEnter }) {
           <AnimatePresence>
             {phase === 'waiting' && (
               <motion.div
-                initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 1, ease: 'easeOut' }}
                 style={{
                   textAlign: 'center',
