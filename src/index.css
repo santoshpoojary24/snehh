@@ -1,0 +1,212 @@
+/* ============================================
+   SNEHA LOVE WEBSITE — GLOBAL CSS
+   Design System: "Cinematic Romance"
+   ============================================ */
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --bg-cream: #FCF9F5; /* Warmer, richer silk */
+  --accent-crimson: #881337; /* Very deep romantic rose */
+  --accent-amber: #D97706; /* Glow amber */
+  --glow-blush: #FCE7F3; /* Ambient soft pink glow */
+  --text-main: #27272A; /* Elegant dark slate */
+  --text-muted: #71717A;
+  
+  --card-white: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(136, 19, 55, 0.08);
+  --crimson-glow: rgba(136, 19, 55, 0.3);
+
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-hand: 'Caveat', cursive;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Section Snap ---------- */
+.section {
+  height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+}
+
+/* ---------- Scrollable Section Interior ---------- */
+.section-inner-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.section-inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- App Container ---------- */
+#root {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ---------- Typography ---------- */
+.font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+.font-body    { font-family: var(--font-body); }
+.font-hand    { font-family: var(--font-hand); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* ---------- Safe Areas ---------- */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background: linear-gradient(145deg, var(--accent-crimson), #4C0519);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 99px; /* Pill shape is more elegant */
+  padding: 16px 32px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  width: 100%;
+  min-height: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.5s var(--ease-fluid);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 8px 24px rgba(136, 19, 55, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 4px 12px rgba(136, 19, 55, 0.3);
+}
+
+/* ---------- Premium Cards ---------- */
+.card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(136, 19, 55, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---------- Section Header Label ---------- */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--accent-crimson);
+  padding: 20px 20px 0;
+  display: block;
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Cinematic Overlays ---------- */
+.cinematic-overlay {
+  background-color: rgba(15, 23, 42, 0.85); /* Deep charcoal slate */
+  backdrop-filter: blur(4px);
+}
+
+/* ---------- Premium Linen Texture ---------- */
+.linen-paper {
+  background-color: #FCFBF9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ---------- Scrollbar hide global ---------- */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Horizontal scroll container ---------- */
+.h-scroll {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  gap: 12px;
+  padding: 0 20px;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+.h-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ---------- Dot indicator ---------- */
+.dot-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 0;
+}
+.dot-indicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-main);
+  opacity: 0.2;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.dot-indicator span.active {
+  opacity: 1;
+  background: var(--accent-crimson);
+  transform: scale(1.4);
+}
