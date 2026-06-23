@@ -11,18 +11,17 @@ import SectionDots from './components/layout/SectionDots'
 import MusicPlayer from './components/layout/MusicPlayer'
 import Toast from './components/ui/Toast'
 
-// Sections — lazy load all of them for faster initial boot
-const HeroSection          = lazy(() => import('./modules/01_Hero/Hero'))
-const PhotoDumpSection     = lazy(() => import('./modules/02_PhotoDump/PhotoDump'))
-const SinceYouSection      = lazy(() => import('./modules/03_SinceYou/SinceYou'))
-const InsideJokesSection   = lazy(() => import('./modules/04_InsideJokes/InsideJokes'))
-const AppreciationSection  = lazy(() => import('./modules/05_Appreciation/Appreciation'))
-const ScratchCardSection   = lazy(() => import('./modules/06_ScratchCard/ScratchCard'))
-const ConstellationSection = lazy(() => import('./modules/07_Constellation/ConstellationCanvas'))
-const LetterSection        = lazy(() => import('./modules/08_Letter/Letter'))
-const EasterEgg            = lazy(() => import('./modules/09_EasterEgg/EasterEgg'))
+// Sections — lazy load all for faster initial boot
+const HeroSection         = lazy(() => import('./modules/01_Hero/Hero'))
+const PhotoDumpSection    = lazy(() => import('./modules/02_PhotoDump/PhotoDump'))
+const SinceYouSection     = lazy(() => import('./modules/03_SinceYou/SinceYou'))
+const InsideJokesSection  = lazy(() => import('./modules/04_InsideJokes/InsideJokes'))
+const AppreciationSection = lazy(() => import('./modules/05_Appreciation/Appreciation'))
+const ScratchCardSection  = lazy(() => import('./modules/06_ScratchCard/ScratchCard'))
+const ReasonsSection      = lazy(() => import('./modules/07_Reasons/Reasons'))  // ← replaces Constellation
+const LetterSection       = lazy(() => import('./modules/08_Letter/Letter'))
+const EasterEgg           = lazy(() => import('./modules/09_EasterEgg/EasterEgg'))
 
-// Minimal skeleton shown while a section loads
 function SectionFallback() {
   return <div className="section" style={{ background: 'var(--bg-cream)' }} />
 }
@@ -44,7 +43,6 @@ function AppInner() {
     <>
       {showBouquet && <BouquetIntro onEnter={handleEnter} />}
 
-      {/* Fixed background layers */}
       <DoodleBG />
       <ConfettiEngine />
       {!showBouquet && (
@@ -58,7 +56,6 @@ function AppInner() {
         <EasterEgg />
       </Suspense>
 
-      {/* Snap scroll container — each section lazy-loaded */}
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Suspense fallback={<SectionFallback />}><HeroSection /></Suspense>
         <Suspense fallback={<SectionFallback />}><PhotoDumpSection /></Suspense>
@@ -66,7 +63,7 @@ function AppInner() {
         <Suspense fallback={<SectionFallback />}><InsideJokesSection /></Suspense>
         <Suspense fallback={<SectionFallback />}><AppreciationSection /></Suspense>
         <Suspense fallback={<SectionFallback />}><ScratchCardSection /></Suspense>
-        <Suspense fallback={<SectionFallback />}><ConstellationSection /></Suspense>
+        <Suspense fallback={<SectionFallback />}><ReasonsSection /></Suspense>
         <Suspense fallback={<SectionFallback />}><LetterSection /></Suspense>
       </main>
     </>
