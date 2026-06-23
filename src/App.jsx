@@ -35,8 +35,6 @@ function AppInner() {
   const handleEnter = () => {
     sessionStorage.setItem('bouquet_seen', 'true')
     setShowBouquet(false)
-    // Autoplay song immediately upon accepting the bouquet
-    play()
   }
 
   return (
