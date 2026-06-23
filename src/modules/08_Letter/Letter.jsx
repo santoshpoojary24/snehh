@@ -2,39 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { LETTER } from '../../config/content'
 
-// Soft floating light dust for the letter reveal
-function Dust() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 10 }}>
-      {[...Array(12)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 100 + Math.random() * 100, x: Math.random() * 300 }}
-          animate={{ 
-            opacity: [0, 0.4, 0], 
-            y: -100,
-            x: `+=${Math.random() > 0.5 ? 50 : -50}` 
-          }}
-          transition={{ 
-            duration: 6 + Math.random() * 4, 
-            repeat: Infinity, 
-            delay: Math.random() * 4,
-            ease: 'linear'
-          }}
-          style={{
-            position: 'absolute',
-            width: 3,
-            height: 3,
-            background: '#fff',
-            borderRadius: '50%',
-            boxShadow: '0 0 12px rgba(251,207,232,0.8)',
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
 export default function LetterSection() {
   const [opened, setOpened] = useState(
     () => localStorage.getItem('letter_opened') === 'true'
@@ -67,17 +34,13 @@ export default function LetterSection() {
             className="cinematic-overlay"
             style={{
               position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
+              top: 0, left: 0,
+              width: '100vw', height: '100vh',
               zIndex: 90,
-              background: 'radial-gradient(ellipse at center, rgba(30,5,10,0.85) 0%, rgba(10,2,4,0.95) 100%)',
-              backdropFilter: 'blur(8px)',
+              background: 'radial-gradient(ellipse at center, rgba(20,3,8,0.88) 0%, rgba(8,1,3,0.96) 100%)',
               pointerEvents: 'none',
             }}
           >
-            <Dust />
           </motion.div>
         )}
       </AnimatePresence>
