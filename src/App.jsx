@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { AppProvider, useApp } from './context/AppContext'
 import { useSectionSnap } from './hooks/useSectionSnap'
+import { useAudioPlayer } from './hooks/useAudioPlayer'
 import BouquetIntro from './components/BouquetIntro'
 
 // Layout
@@ -25,6 +26,7 @@ import EasterEgg from './modules/09_EasterEgg/EasterEgg'
 
 function AppInner() {
   const { setAudioState } = useApp()
+  const { play } = useAudioPlayer()
   useSectionSnap()
   // Show bouquet intro once per session
   const [showBouquet, setShowBouquet] = useState(
@@ -34,7 +36,7 @@ function AppInner() {
     sessionStorage.setItem('bouquet_seen', 'true')
     setShowBouquet(false)
     // Autoplay song immediately upon accepting the bouquet
-    setAudioState(prev => ({ ...prev, playing: true }))
+    play()
   }
 
   return (
