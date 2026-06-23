@@ -40,7 +40,7 @@ export default function ConstellationSection() {
     canvas.height = H
 
     const stars = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {  // reduced from 100 stars to 50
       stars.push({
         x: Math.random() * W,
         y: Math.random() * H,
@@ -166,9 +166,20 @@ export default function ConstellationSection() {
       return { x, y, vx: Math.cos(angle) * 8, vy: Math.sin(angle) * 8, life: 1, tail: [] }
     }
 
-    const loop = () => {
+    let lastTime = 0
+    const TARGET_FPS = 30
+    const FRAME_INTERVAL = 1000 / TARGET_FPS
+
+    const loop = (timestamp) => {
+      // Cap to 30fps to halve GPU usage on low-end phones
+      if (timestamp - lastTime < FRAME_INTERVAL) {
+        animRef.current = requestAnimationFrame(loop)
+        return
+      }
+      lastTime = timestamp
+
       const state = gameState.current
-      state.time += 0.016
+      state.time += 0.033
       state.auroraPhase += 0.008
       const W = canvas.width
       const H = canvas.height
@@ -362,7 +373,6 @@ export default function ConstellationSection() {
       })
       ctx.globalCompositeOperation = 'source-over'
       ctx.globalAlpha = 1
-      ctx.shadowBlur = 0
       state.particles = aliveP
 
       animRef.current = requestAnimationFrame(loop)
@@ -404,8 +414,8 @@ export default function ConstellationSection() {
             style={{ textAlign: 'center' }}
           >
             <motion.h2
-              animate={showComplete ? { scale: [1, 1.08, 1], textShadow: ['0 8px 30px rgba(0,0,0,0.9)', '0 0 30px rgba(251,207,232,0.8)', '0 8px 30px rgba(0,0,0,0.9)'] } : {}}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{}}
+              transition={{}}
               style={{
                 fontFamily: 'var(--font-display)',
                 color: '#fff',
@@ -428,9 +438,9 @@ export default function ConstellationSection() {
             )}
             {showComplete && (
               <motion.p
-                initial={{ opacity: 0, y: 10, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 1.5, ease: 'easeOut' }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: 'easeOut' }}
                 style={{ fontFamily: 'var(--font-hand)', color: '#FBCFE8', fontSize: 20, marginTop: 12 }}
               >
                 our love, written in the stars 🌹
