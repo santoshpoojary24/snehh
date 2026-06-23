@@ -32,6 +32,11 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 html {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
@@ -54,7 +59,7 @@ body {
 
 /* ---------- Section Snap ---------- */
 .section {
-  height: 100svh;
+  height: 100dvh; /* Dynamic viewport height to prevent Android URL bar jump */
   scroll-snap-align: start;
   scroll-snap-stop: always;
   overflow: hidden;
@@ -62,6 +67,8 @@ body {
   width: 100%;
   max-width: 390px;
   margin: 0 auto;
+  transform: translateZ(0); /* Hardware acceleration to fix Android flicker */
+  will-change: transform;
 }
 
 /* ---------- Scrollable Section Interior ---------- */

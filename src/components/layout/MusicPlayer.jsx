@@ -62,14 +62,14 @@ export default function MusicPlayer() {
   return (
     <div style={{
       position: 'fixed',
-      bottom: `calc(16px + env(safe-area-inset-bottom, 0px))`,
+      bottom: 24,
       left: '50%',
       transform: 'translateX(-50%)',
       width: '100%',
       maxWidth: 390,
       display: 'flex',
       justifyContent: 'center',
-      zIndex: 150,
+      zIndex: 9999, /* Boosted z-index */
       pointerEvents: 'none',
     }}>
       <motion.div
@@ -86,13 +86,11 @@ export default function MusicPlayer() {
         animate={{ height: audioState.expanded ? (track.lyrics ? 240 : 140) : 48 }}
         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         style={{
-          background: 'var(--card-white)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid var(--card-border)',
+          background: 'rgba(255, 255, 255, 0.96)', /* solid fallback instead of heavy blur for Android */
+          border: '1px solid rgba(136, 19, 55, 0.1)',
           borderRadius: audioState.expanded ? 20 : 999,
           overflow: 'hidden',
-          boxShadow: '0 8px 32px var(--crimson-glow)',
+          boxShadow: '0 8px 32px rgba(136, 19, 55, 0.25)',
           display: 'flex',
           flexDirection: 'column',
         }}
